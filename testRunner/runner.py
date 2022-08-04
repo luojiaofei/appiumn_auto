@@ -6,7 +6,7 @@ import datetime
 import xlsxwriter
 import time
 import unittest
-from common import reportPhone
+from Common import reportPhone
 from testRunner.runnerBase import TestInterfaceCase
 # from testCase.login import testLogin
 # from testCase.work import testContact
@@ -18,15 +18,15 @@ from testBLL import adbCommon
 from testMode import email as memail
 from testBLL import report as b_report
 from testBLL import phoneBase
-from common.variable import GetVariable as common
-from common import dataToString
+from Common.variable import GetVariable as Common
+from Common import dataToString
 import os
 from testBLL import apkBase
 from multiprocessing import Pool
-from common import operateFile
-from common import operateYaml
+from Common import OperateFile
+from Common import operateYaml
 from http.server import HTTPServer
-from common import myserver
+from Common import myserver
 from multiprocessing import Process
 import subprocess
 PATH = lambda p: os.path.abspath(
@@ -43,11 +43,11 @@ def get_email():
     email = b_email.read_email(m_email)
     return email
 def read_report(f=""):
-    op = operateFile.OperateFile(f, "r")
+    op = OperateFile.OperateFile(f, "r")
     return op.read_txt_row()
 # 得到总统计的case
 def get_report_collect(start_test_time, endtime, starttime):
-    _read_collect_json = eval(read_report(common.REPORT_COLLECT_PATH))
+    _read_collect_json = eval(read_report(Common.REPORT_COLLECT_PATH))
     for key in _read_collect_json:
         data[key] = _read_collect_json[key]
     apk_msg = apkBase.apkInfo(PATH('../img/monkneyTest.apk'))
@@ -58,10 +58,10 @@ def get_report_collect(start_test_time, endtime, starttime):
     data["test_date"] = start_test_time
 # 得到每个设备的的case 运行情况
 def get_report_init():
-    data["init"] = eval(read_report(common.REPORT_INIT))["init"]
+    data["init"] = eval(read_report(Common.REPORT_INIT))["init"]
 # 得到每个case的运行情况
 def get_report_info():
-    data["info"] = eval(read_report(common.REPORT_INFO_PATH))["info"]
+    data["info"] = eval(read_report(Common.REPORT_INFO_PATH))["info"]
 
 def get_common_report(start_test_time, endtime, starttime):
     get_report_collect(start_test_time, endtime, starttime)
@@ -113,7 +113,7 @@ def report():
     b_OperateReport.close()
     # b_email.send_mail(get_email())
 def open_web_server():
-    web_server = HTTPServer((common.HOST, common.PORT), myserver.myHandler)
+    web_server = HTTPServer((Common.HOST, Common.PORT), myserver.myHandler)
     web_server.serve_forever()
 
 if __name__ == '__main__':
@@ -130,10 +130,10 @@ if __name__ == '__main__':
             appium_server.stop_server()
             subprocess.Popen("taskkill /F /T /PID " + str(p.pid), shell=True)
             # web_server.server_close() #关闭webserver
-            operateFile.OperateFile(common.REPORT_COLLECT_PATH).remove_file()
-            operateFile.OperateFile(common.REPORT_INIT).remove_file()
-            operateFile.OperateFile(common.REPORT_INFO_PATH).remove_file()
-            operateFile.OperateFile(common.CRASH_LOG_PATH).remove_file()
+            OperateFile.OperateFile(Common.REPORT_COLLECT_PATH).remove_file()
+            OperateFile.OperateFile(Common.REPORT_INIT).remove_file()
+            OperateFile.OperateFile(Common.REPORT_INFO_PATH).remove_file()
+            OperateFile.OperateFile(Common.CRASH_LOG_PATH).remove_file()
 
         else:
             print(u"设备不存在")
